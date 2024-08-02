@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Firebase Phone Authentication</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+ apiKey: "AIzaSyAj9A2hXGTHd2i864BBKFSmqeBMZAWA7Qk",
+  authDomain: "glowup-essentials.firebaseapp.com",
+  databaseURL: "https://glowup-essentials-default-rtdb.firebaseio.com",
+  projectId: "glowup-essentials",
+  storageBucket: "glowup-essentials.appspot.com",
+  messagingSenderId: "603329436949",
+  appId: "1:603329436949:web:bc2aecbe0f3781510c9d1c",
+  measurementId: "G-33HYRGMSY4"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.css" />
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+
+</head>
+
+<body>
+    <script>
+
+        function getToken(callback) {
+            var container = document.createElement('div');
+            container.id = 'captcha';
+            document.body.appendChild(container);
+            var captcha = new firebase.auth.RecaptchaVerifier('captcha', {
+
+        /****************
+         I N V I S I B L E  
+        **********************/
+                'size': 'invisible',
+                'callback': function (token) {
+                    callback(token);
+                },
+                'expired-callback': function () {
+                    callback('');
+                }
+            });
+            captcha.render().then(function () {
+                captcha.verify();
+            });
+        }
+
+        function sendTokenToApp(token) {
+            var baseUri = decodeURIComponent(location.search.replace(/^\?appurl\=/, ''));
+            location.href = 'http://www.google.com + '/?token=' + encodeURIComponent(token);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            getToken(sendTokenToApp);
+        });
+
+    </script>
+    <h2>Verification Code is Sending !! </h2>
+    <h3>Please Wait !!</h3>
+
+</body>
+
+</html>
